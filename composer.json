@@ -23,6 +23,7 @@
     },
     "require-dev": {
         "drupal/core-dev": "^8.8.0",
+        "drupal8-rector/drupal8-rector": "^0.1.0",
         "mglaman/drupal-check": "^1.0"
     },
     "conflict": {
