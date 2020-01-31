@@ -25,6 +25,7 @@
         "drupal/core-recommended": "^8.9"
     },
     "require-dev": {
+        "drupal/console": "^1",
         "drupal/core-dev": "^8.9"
     },
     "conflict": {
