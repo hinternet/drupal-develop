@@ -26,5 +26,7 @@
 .gitattributes
 *.local.*
 docker-compose.override.yml
+rector.yml
+phpunit.xml
 # Ignore composer.lock since its scaffolding. Comment this line under project VCS.
 composer.lock
