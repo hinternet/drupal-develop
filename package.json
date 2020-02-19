@@ -10,7 +10,7 @@
     "node": ">= 8.11"
   },
   "scripts": {
-    "lint:js": "node ./node_modules/eslint/bin/eslint.js --format=compact",
+    "lint:js": "node ./node_modules/eslint/bin/eslint.js --format=compact"
   },
   "dependencies": {
     "cross-env": "^7.0.0",
