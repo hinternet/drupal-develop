@@ -10,6 +10,8 @@ services:
       MYSQL_DATABASE: $DB_NAME
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
+      MYSQL_CHARACTER_SET_SERVER: $MYSQL_CHARACTER_SET_SERVER
+      MYSQL_COLLATION_SERVER: $MYSQL_COLLATION_SERVER
 #    volumes:
 #      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
 #      - /path/to/mariadb/data/on/host:/var/lib/mysql # Use bind mount
@@ -30,6 +32,7 @@ services:
       PHP_FPM_USER: wodby
       PHP_FPM_GROUP: wodby
       COLUMNS: 80 # Set 80 columns for docker exec -it.
+      HASH_SALT_FILE: $HASH_SALT_FILE
 ## Read instructions at https://wodby.com/docs/stacks/php/local/#xdebug
 #      PHP_XDEBUG: 1
 #      PHP_XDEBUG_DEFAULT_ENABLE: 1
