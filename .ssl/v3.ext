@@ -1,0 +1,11 @@
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = drupal.docker.localhost
+DNS.2 = *.drupal.docker.localhost
+DNS.3 = dev.docker.local
+DNS.4 = *.dev.docker.local
+DNS.5 = localhost

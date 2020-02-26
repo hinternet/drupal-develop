@@ -1,0 +1,20 @@
+{
+  "name": "drupal",
+  "version": "8.9.0",
+  "description": "Base structure for Drupal projects",
+  "author": "Dennis A. Torres Rodriguez <d70rr3s@gmail.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "engines": {
+    "yarn": ">= 1.6",
+    "node": ">= 8.11"
+  },
+  "scripts": {
+    "lint:js": "node ./node_modules/eslint/bin/eslint.js --format=compact"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.0",
+    "dotenv-safe": "^8.2.0",
+    "eslint-config-drupal-bundle": "^1.0.2"
+  }
+}

@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  chrome:
+    image: selenium/standalone-chrome:$SELENIUM_CHROME_TAG
+    container_name: "${PROJECT_NAME}_chrome"
+    ulimits:
+      core:
+        soft: -1
+        hard: -1
+    ports:
+      - "4444:4444"
+      - "9515:9515"
+    volumes:
+      - /dev/shm:/dev/shm
+    entrypoint:
+      - chromedriver
+      - "--no-sandbox"
+      - "--disable-dev-shm-usage"
+      - "--log-path=/tmp/chromedriver.log"
+      - "--verbose"
+      - "--whitelisted-ips="
