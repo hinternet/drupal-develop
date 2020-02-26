@@ -1,13 +1,8 @@
 {
-    "name": "drupal/recommended-project",
-    "description": "Project template for Drupal 8 projects",
+    "name": "hinternet/drupal-project",
+    "description": "Scaffold for Drupal projects (seasoned fork from https://github.com/drupal/recommended-project)",
     "type": "project",
     "license": "GPL-2.0-or-later",
-    "homepage": "https://www.drupal.org/project/drupal",
-    "support": {
-        "docs": "https://www.drupal.org/docs/user_guide/en/index.html",
-        "chat": "https://www.drupal.org/node/314178"
-    },
     "repositories": [
         {
             "type": "composer",
@@ -28,6 +23,7 @@
     "require-dev": {
         "drupal/console": "^1",
         "drupal/core-dev": "^8.9",
+        "mglaman/drupal-check": "^1.0",
         "roave/security-advisories": "dev-master"
     },
     "conflict": {
@@ -38,12 +34,19 @@
     "config": {
         "sort-packages": true
     },
+    "autoload": {
+      "files": ["load.environment.php"]
+    },
     "scripts": {
         "post-create-project-cmd": [
             "./scripts/generate-salt.sh"
         ]
     },
     "extra": {
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
         "drupal-scaffold": {
             "locations": {
                 "web-root": "web/"
