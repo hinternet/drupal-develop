@@ -23,6 +23,8 @@
     "require-dev": {
         "drupal/console": "^1",
         "drupal/core-dev": "^8.9",
+        "drupal/devel": "^2.1",
+        "drush/drush": "^10",
         "mglaman/drupal-check": "^1.0",
         "roave/security-advisories": "dev-master"
     },
@@ -46,6 +48,11 @@
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
+        },
+        "patches": {
+            "drupal/core": {
+                "Allow adding predefined lists to the options fields": "https://www.drupal.org/files/issues/2019-07-08/1909744-predefined-options-22.patch"
+            }
         },
         "drupal-scaffold": {
             "locations": {

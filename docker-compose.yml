@@ -20,7 +20,6 @@ services:
     image: wodby/drupal-php:$PHP_TAG
     container_name: "${PROJECT_NAME}_php"
     environment:
-      PHP_OPCACHE_ENABLE: 0
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
 #      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S opensmtpd:25
       DB_HOST: $DB_HOST
@@ -32,6 +31,9 @@ services:
       PHP_FPM_USER: wodby
       PHP_FPM_GROUP: wodby
       COLUMNS: 80 # Set 80 columns for docker exec -it.
+      # Drupal settings
+      DRUSH_OPTIONS_URI: $DRUSH_OPTIONS_URI
+      CONFIG_SYNC_DIRECTORY: $CONFIG_SYNC_DIRECTORY
       HASH_SALT_FILE: $HASH_SALT_FILE
 ## Read instructions at https://wodby.com/docs/stacks/php/local/#xdebug
 #      PHP_XDEBUG: 1
