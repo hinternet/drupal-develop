@@ -250,7 +250,7 @@ $databases['default']['default'] = [
  * directory in the public files path. The setting below allows you to set
  * its location.
  */
-# $settings['config_sync_directory'] = '/directory/outside/webroot';
+$settings['config_sync_directory'] = getenv('CONFIG_SYNC_DIRECTORY');
 
 /**
  * Settings:
@@ -354,13 +354,13 @@ $settings['update_free_access'] = FALSE;
  * Be aware, however, that it is likely that this would allow IP
  * address spoofing unless more advanced precautions are taken.
  */
-# $settings['reverse_proxy'] = TRUE;
+$settings['reverse_proxy'] = TRUE;
 
 /**
  * Specify every reverse proxy IP address in your environment.
  * This setting is required if $settings['reverse_proxy'] is TRUE.
  */
-# $settings['reverse_proxy_addresses'] = ['a.b.c.d', ...];
+$settings['reverse_proxy_addresses'] = ['192.168.99.1'];
 
 /**
  * Reverse proxy trusted headers.
@@ -390,7 +390,7 @@ $settings['update_free_access'] = FALSE;
  * @see \Symfony\Component\HttpFoundation\Request::HEADER_FORWARDED
  * @see \Symfony\Component\HttpFoundation\Request::setTrustedProxies
  */
-# $settings['reverse_proxy_trusted_headers'] = \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_ALL | \Symfony\Component\HttpFoundation\Request::HEADER_FORWARDED;
+$settings['reverse_proxy_trusted_headers'] = \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_ALL | \Symfony\Component\HttpFoundation\Request::HEADER_FORWARDED;
 
 
 /**
@@ -518,7 +518,7 @@ if ($settings['hash_salt']) {
  * must exist and be writable by Drupal. This directory must be relative to
  * the Drupal installation directory and be accessible over the web.
  */
-# $settings['file_public_path'] = 'sites/default/files';
+$settings['file_public_path'] = DRUPAL_ROOT . DIRECTORY_SEPARATOR . 'sites/default/files';
 
 /**
  * Private file path:
@@ -533,7 +533,7 @@ if ($settings['hash_salt']) {
  * See https://www.drupal.org/documentation/modules/file for more information
  * about securing private files.
  */
-# $settings['file_private_path'] = '';
+$settings['file_private_path'] = dirname(DRUPAL_ROOT) . '/files-private';
 
 /**
  * Temporary file path:
@@ -718,7 +718,25 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * @endcode
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
+ *
+ * By default the project URL is included, but you can add as many hosts as
+ * you see fit by setting the TRUSTED_HOSTS env variable. Each host must be
+ * separated by a comma. DO NOT use patterns just the actual host, since
+ * EXACT MATCH pattern will be applied.
  */
+$settings['trusted_host_patterns'] = [
+  sprintf('^%s$', str_replace('.', '\.', getenv('PROJECT_BASE_URL'))),
+  sprintf('^.+\.%s$', str_replace('.', '\.', getenv('PROJECT_BASE_URL'))),
+];
+
+$trusted_hosts = getenv('TRUSTED_HOSTS') ?: '';
+
+if (strpos($trusted_hosts, ',') !== FALSE) {
+  $trusted_hosts = explode(',', $trusted_hosts);
+  foreach ($trusted_hosts as $host) {
+    $settings['trusted_host_patterns'][] = sprintf('^%s$', str_replace('.', '\.', $host));
+  }
+}
 
 /**
  * The default list of directories that will be ignored by Drupal's file API.
@@ -753,6 +771,58 @@ $settings['entity_update_batch_size'] = 50;
  * retained after a successful entity update process.
  */
 $settings['entity_update_backup'] = TRUE;
+
+/**
+ * Configuration split.
+ *
+ * This section provides the available "splits" for the staged configuration.
+ * A "split" is called to a group of configurations that will apply to a given
+ * environment for example "staging" or "development".
+ *
+ * The base or "default" configuration is applied for all environments so is
+ * recommended to always put production-ready values in your "default"
+ * configuration and do "splits" for the rest. Even thought you can do split
+ * for production environment for those configurations that should only be
+ * enabled or available on production, for example: Google Analytics.
+ *
+ * The active split is calculated using environment variable "PROJECT_STAGE",
+ * if set this will be de enabled split and the rest wil be disabled, meaning
+ * they won't take effect on the active configuration during import or export
+ * tasks. If the environment variable "PROJECT_STAGE" is not set or contains
+ * an invalid value (a.k.a un-existing split) production split will be used by
+ * default.
+ *
+ * For more information about how the splits work check
+ * https://www.drupal.org/docs/8/modules/configuration-split
+ */
+define('CONFIG_SPLIT_LOCAL', 'local');
+define('CONFIG_SPLIT_DEV', 'dev');
+define('CONFIG_SPLIT_CI', 'ci');
+define('CONFIG_SPLIT_UAT', 'uat');
+define('CONFIG_SPLIT_STAGE', 'stage');
+define('CONFIG_SPLIT_PROD', 'prod');
+define('CONFIG_SPLIT_PREFIX', 'config_split.config_split.');
+
+$envs = [
+  CONFIG_SPLIT_LOCAL,
+  CONFIG_SPLIT_DEV,
+  CONFIG_SPLIT_CI,
+  CONFIG_SPLIT_UAT,
+  CONFIG_SPLIT_STAGE,
+  CONFIG_SPLIT_PROD,
+];
+
+foreach ($envs as $e) {
+  $config[CONFIG_SPLIT_PREFIX . $e]['status'] = FALSE;
+}
+
+if (getenv('PROJECT_STAGE') === FALSE ||
+  !in_array(getenv('PROJECT_STAGE'), $envs, TRUE)) {
+  $config[CONFIG_SPLIT_PREFIX . CONFIG_SPLIT_PROD]['status'] = TRUE;
+}
+else {
+  $config[CONFIG_SPLIT_PREFIX . getenv('PROJECT_STAGE')]['status'] = TRUE;
+}
 
 /**
  * Load local development override configuration, if available.

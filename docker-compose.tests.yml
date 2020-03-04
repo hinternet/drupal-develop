@@ -20,3 +20,14 @@ services:
       - "--log-path=/tmp/chromedriver.log"
       - "--verbose"
       - "--whitelisted-ips="
+
+  cypress:
+    image: cypress/included:$CYPRESS_TAG
+    container_name: "${PROJECT_NAME}_cypress"
+    depends_on:
+      - $WEBSERVER_SERVICE
+    environment:
+      CYPRESS_baseUrl: $SIMPLETEST_BASE_URL
+    working_dir: /e2e
+    volumes:
+      - ./tests/e2e/cypress/:/e2e
