@@ -31,6 +31,7 @@ phpunit.xml
 
 # Ignored files from scaffolding. Comment this line under project VCS.
 composer.lock
+yarn.lock
 .editorconfig
 
 # Ignore backups or artifacts
@@ -40,6 +41,11 @@ composer.lock
 **/*.rar
 **/*.7z
 **/*.mysql
+
+# Ignore Node artifacts
+**/node_modules
+**/bower_components
+.npm-cache
 
 # Do not ignore distributed database files.
 !config/db/*.gz

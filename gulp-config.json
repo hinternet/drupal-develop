@@ -1,0 +1,9 @@
+{
+  "require": [],
+  "paths": [],
+  "browserSync": {
+    "notify": false,
+    "open": false,
+    "https":  true
+  }
+}
