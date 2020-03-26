@@ -730,12 +730,10 @@ $settings['trusted_host_patterns'] = [
 ];
 
 $trusted_hosts = getenv('TRUSTED_HOSTS') ?: '';
-
-if (strpos($trusted_hosts, ',') !== FALSE) {
-  $trusted_hosts = explode(',', $trusted_hosts);
-  foreach ($trusted_hosts as $host) {
-    $settings['trusted_host_patterns'][] = sprintf('^%s$', str_replace('.', '\.', $host));
-  }
+$trusted_hosts = explode(',', $trusted_hosts);
+$trusted_hosts = array_filter($trusted_hosts);
+foreach ($trusted_hosts as $host) {
+  $settings['trusted_host_patterns'][] = sprintf('^%s$', str_replace('.', '\.', $host));
 }
 
 /**
