@@ -43,6 +43,9 @@
     "scripts": {
         "post-create-project-cmd": [
             "./scripts/generate-salt.sh"
+        ],
+        "nuke": [
+            "rm -rf vendor composer.lock web/core web/libraries/* web/modules/contrib/* web/themes/contrib/* web/profiles/*"
         ]
     },
     "extra": {
