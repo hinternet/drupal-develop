@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+echo "Executing .git/hooks/commit-msg...";
+MESSAGE="$(< $1)"
+if grep 'docker\|lxc' /proc/1/cgroup -qa; then
+  ROOT_DIR="$(pwd)/"
+  "${ROOT_DIR}"vendor/bin/robo git:commit-msg "${MESSAGE}"
+else
+  echo "Launching in docker"
+  docker-compose exec -T php bash -c "vendor/bin/robo git:commit-msg '${MESSAGE}'"
+fi
+exit 1
