@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+echo "Executing .git/hooks/pre-commit..."
+
+LIST=$( git diff --name-only --cached --diff-filter=ACM )
+if grep 'docker\|lxc' /proc/1/cgroup -qa; then
+  ROOT_DIR="$(pwd)/"
+  "${ROOT_DIR}"/vendor/bin/robo validate:coding-standards "${LIST}"
+else
+  docker-compose exec -T php bash -c 'vendor/bin/robo validate:coding-standards "$( git diff --name-only --cached --diff-filter=ACM )"'
+fi
+
+# Return the status of the last run command.
+exit $?
+
