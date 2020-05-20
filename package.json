@@ -10,6 +10,7 @@
   },
   "scripts": {
     "module:lint:js": "node ./node_modules/eslint/bin/eslint.js --format=compact",
+    "module:build:js": "cross-env BABEL_ENV=legacy ./node_modules/.bin/babel",
     "theme:lint": "gulp lint",
     "theme:watch": "gulp watch:silent",
     "theme:serve": "gulp watch:serve",
@@ -17,6 +18,9 @@
     "theme:prod": "gulp build:prod"
   },
   "dependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
     "autoprefixer": "^9.7.4",
     "browser-sync": "^2.26.7",
     "cross-env": "^7.0.0",
