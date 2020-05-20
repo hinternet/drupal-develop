@@ -518,7 +518,7 @@ if ($settings['hash_salt']) {
  * must exist and be writable by Drupal. This directory must be relative to
  * the Drupal installation directory and be accessible over the web.
  */
-$settings['file_public_path'] = DRUPAL_ROOT . DIRECTORY_SEPARATOR . 'sites/default/files';
+$settings['file_public_path'] = 'sites/default/files';
 
 /**
  * Private file path:
@@ -730,12 +730,10 @@ $settings['trusted_host_patterns'] = [
 ];
 
 $trusted_hosts = getenv('TRUSTED_HOSTS') ?: '';
-
-if (strpos($trusted_hosts, ',') !== FALSE) {
-  $trusted_hosts = explode(',', $trusted_hosts);
-  foreach ($trusted_hosts as $host) {
-    $settings['trusted_host_patterns'][] = sprintf('^%s$', str_replace('.', '\.', $host));
-  }
+$trusted_hosts = explode(',', $trusted_hosts);
+$trusted_hosts = array_filter($trusted_hosts);
+foreach ($trusted_hosts as $host) {
+  $settings['trusted_host_patterns'][] = sprintf('^%s$', str_replace('.', '\.', $host));
 }
 
 /**
